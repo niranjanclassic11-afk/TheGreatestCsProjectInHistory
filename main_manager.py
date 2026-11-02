@@ -45,9 +45,9 @@ class QT_Call_Handler:
         for row in data:
             row.append(False)
             cursor.execute("SELECT ItemName FROM Menu WHERE ItemCode = " + str(row[1]))
-            data = cursor.fetchall()
-            if data:
-                row.insert(1, data[0][0])
+            a = cursor.fetchall()
+            if a:
+                row.insert(1, a[0][0])
         return data
         
     def mark_item_finished(self, order_id, item_code):
