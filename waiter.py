@@ -38,7 +38,6 @@ class waiterView(QWidget):
         self.itemNameComboBox = QComboBox()
         self.itemNameComboBox.addItems(self.call_handler.get_item_names())
         self.itemNameTable = QTableWidget()
-        self.itemNameTable.setMaximumWidth(300)
         self.itemNameTable.verticalHeader().hide()
         self.itemNameTable.horizontalHeader().hide()
         self.itemNameTable.setColumnCount(1)
@@ -55,7 +54,6 @@ class waiterView(QWidget):
         item_codes = [str(i) for i in self.call_handler.get_item_codes()]
         self.itemCodeComboBox.addItems(item_codes)
         self.itemCodeTable = QTableWidget()
-        self.itemCodeTable.setMaximumWidth(300)
         self.itemCodeTable.verticalHeader().hide()
         self.itemCodeTable.setAlternatingRowColors(True)
         self.itemCodeTable.horizontalHeader().hide()
@@ -75,7 +73,6 @@ class waiterView(QWidget):
         self.quantityInput = QComboBox()
         self.quantityInput.addItems([str(i) for i in range(1, 21)])
         self.itemQuantityTable = QTableWidget()
-        self.itemQuantityTable.setMaximumWidth(300)
         self.itemQuantityTable.verticalHeader().setDefaultSectionSize(65)
         self.itemQuantityTable.setAlternatingRowColors(True)
         self.itemQuantityTable.verticalHeader().hide()
