@@ -1,8 +1,6 @@
-import random
 from PyQt6.QtWidgets import *
 from PyQt6.QtCore import *
 from PyQt6.QtGui import *
-from pathlib import Path
 
 DEFAULT_SECTION_SIZE = 80
 
@@ -159,16 +157,6 @@ def betterTable(table:QTableView):
     table.verticalHeader().setDefaultSectionSize(DEFAULT_SECTION_SIZE)
     table.setAlternatingRowColors(True)
     return table
-
-
-
-def load_stylesheet(file_path: str) -> str:
-        """Safely reads and returns the QSS template contents."""
-        path = Path(file_path)
-        if not path.exists():
-            print(f"Warning: Template file {file_path} not found.")
-            return ""
-        return path.read_text()
 
 class ProductTableModel(QAbstractTableModel):
     IDIndex = 1 # the id which u want to get when the checkbox is checked. Don;t change it here
