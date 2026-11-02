@@ -1,0 +1,26 @@
+
+#Creating Menu Table
+mysql> CREATE TABLE Menu (ItemName VARCHAR(20), ItemCode INT, Price INT);
+
+#Inserting Menu in Menu Table
+mysql> INSERT INTO Menu VALUES("Dosa", 101, 80); 
+mysql> INSERT INTO Menu VALUES("Idly", 102, 40); 
+mysql> INSERT INTO Menu VALUES("Chappathi", 103, 20); 
+mysql> INSERT INTO Menu VALUES("Parotta", 104, 60); 
+mysql> INSERT INTO Menu VALUES("Kothu Parotta", 105, 80); 
+mysql> INSERT INTO Menu VALUES("Noodles", 106, 80); 
+mysql> INSERT INTO Menu VALUES("Pizza", 107, 160); 
+mysql> INSERT INTO Menu VALUES("Pasta", 108, 120); 
+mysql> INSERT INTO Menu VALUES("Poori Masala", 109, 50); 
+mysql> INSERT INTO Menu VALUES("Vada", 110, 30); 
+mysql> INSERT INTO Menu VALUES("Burger", 111, 150); 
+mysql> INSERT INTO Menu VALUES("Chola Poori", 112, 90); 
+mysql> INSERT INTO Menu VALUES("Manchurian", 113, 130); 
+mysql> INSERT INTO Menu VALUES("Gobi 65", 114, 140); 
+mysql> INSERT INTO Menu VALUES("Upma THE GOAT", 115, 5000); 
+
+#Creating payments Table
+mysql> CREATE TABLE payments(OrderID INT, Price INT, Completed BOOL, Paid BOOL);
+
+#Creating ORDERS Table
+mysql> CREATE TABLE ORDERS (Order_ID INT, Item_Code INT, Quantity INT, Price INT, Completed BOOL);
