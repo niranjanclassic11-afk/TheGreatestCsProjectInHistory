@@ -98,8 +98,8 @@ if __name__ == "__main__":
     call_handler.cashier_window = cashier_window
     call_handler.waiter_window = waiter_window
 
-    chef_window.show()
-    cashier_window.show()
-    waiter_window.show()
+    chef_window.showMaximized()
+    cashier_window.showMaximized()
+    waiter_window.showMaximized()
     
     sys.exit(app.exec())
