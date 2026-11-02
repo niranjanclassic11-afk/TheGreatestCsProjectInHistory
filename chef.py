@@ -22,6 +22,8 @@ class chefView(QWidget):
         self.mainlayout = QVBoxLayout()
         self.table = QTableView()
         self.table = betterTable(self.table)
+        width = QGuiApplication.primaryScreen().size().width()
+        self.table.horizontalHeader().setDefaultSectionSize(width//5 - 5)
         self.label = QLabel()
         self.label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.label.setFont(QFont("arial", 40))
