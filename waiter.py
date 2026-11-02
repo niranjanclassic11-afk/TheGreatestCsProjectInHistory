@@ -108,6 +108,7 @@ class waiterView(QWidget):
         self.itemNameTable.setItem(row, 0, QTableWidgetItem(self.itemNameComboBox.currentText()))
         self.itemQuantityTable.insertRow(row)
         self.itemQuantityTable.setItem(row, 0, QTableWidgetItem(self.quantityInput.currentText()))
+        self.itemNameTable.resizeColumnToContents(0)
 
         self.items.append([int(self.itemCodeComboBox.currentText()), int(self.quantityInput.currentText())])
 
