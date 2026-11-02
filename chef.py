@@ -30,13 +30,6 @@ class chefView(QWidget):
         self.label.setText("CHEF VIEW")
         self.mainlayout.addWidget(self.label)
 
-        self.updateButton = QPushButton()
-        self.updateButton.setMinimumHeight(80)
-        self.updateButton.setStyleSheet(BUTTONSTYLE)
-        self.updateButton.setText("Update")
-        self.mainlayout.addWidget(self.updateButton)
-        self.updateButton.clicked.connect(self.updateTable)
-
         self.table_model = ProductTableModel(self.call_handler.get_chef_data(), headers, lambda order_id, item_code: self.markItemFinish(order_id, item_code), checkBoxColumnNumber=4)
         self.table_model.IDIndex = 0
         self.table_model.Index1 = 2
