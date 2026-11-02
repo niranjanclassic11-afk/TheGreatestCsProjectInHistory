@@ -26,6 +26,8 @@ class cashierView(QWidget):
 
         self.table = QTableView()
         self.table=betterTable(self.table)
+        width = QGuiApplication.primaryScreen().size().width()
+        self.table.horizontalHeader().setDefaultSectionSize(width//4 - 7)
         self.tableModel = ProductTableModel(self.call_handler.get_cashier_data(), paymentsHeader, lambda y, a:self.paid(y), checkBoxColumnNumber=3)
         self.tableModel.IDIndex = 0
         self.table.setModel(self.tableModel)
