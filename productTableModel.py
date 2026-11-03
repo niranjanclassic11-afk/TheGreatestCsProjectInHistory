@@ -223,3 +223,6 @@ class ProductTableModel(QAbstractTableModel):
         self.beginResetModel()
         self._data = new_data
         self.endResetModel()
+
+if __name__ == "__main__":
+    print("Execute main_manager.py instead")

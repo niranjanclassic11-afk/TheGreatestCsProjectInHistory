@@ -42,9 +42,5 @@ class cashierView(QWidget):
         self.tableModel.update_all_data(self.call_handler.get_cashier_data())
 
 if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    mainwidget = QMainWindow()
-    widget = cashierView()
-    mainwidget.setCentralWidget(widget)
-    mainwidget.showMaximized()
-    sys.exit(app.exec())
+    print("Execute main_manager.py instead")
+

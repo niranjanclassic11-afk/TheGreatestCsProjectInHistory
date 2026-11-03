@@ -41,9 +41,5 @@ class chefView(QWidget):
 
 
 if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    mainwidget = QMainWindow()
-    widget = chefView()
-    mainwidget.setCentralWidget(widget)
-    mainwidget.showMaximized()
-    sys.exit(app.exec())
+    print("Execute main_manager.py instead")
+
