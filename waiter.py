@@ -20,6 +20,7 @@ class waiterView(QWidget):
         self.setLayout(self.mainlayout)
         self.setFont(font)
         self.items = []
+        self.tableItems = []
 
     def ui(self):
         self.label = QLabel()
@@ -36,14 +37,7 @@ class waiterView(QWidget):
         self.ItemNameLayout.addWidget(self.ItemNameLabel)
         self.itemNameComboBox = QComboBox()
         self.itemNameComboBox.addItems(self.call_handler.get_item_names())
-        self.itemNameTable = QTableWidget()
-        self.itemNameTable.verticalHeader().hide()
-        self.itemNameTable.horizontalHeader().hide()
-        self.itemNameTable.setColumnCount(1)
-        self.itemNameTable.setAlternatingRowColors(True)
-        self.itemNameTable.verticalHeader().setDefaultSectionSize(65)
         self.ItemNameLayout.addWidget(self.itemNameComboBox)
-        self.ItemNameLayout.addWidget(self.itemNameTable)
         self.sideLayout.addLayout(self.ItemNameLayout)
 
         self.ItemCodeLayout = QVBoxLayout()
@@ -52,15 +46,8 @@ class waiterView(QWidget):
         self.itemCodeComboBox = QComboBox()
         item_codes = [str(i) for i in self.call_handler.get_item_codes()]
         self.itemCodeComboBox.addItems(item_codes)
-        self.itemCodeTable = QTableWidget()
-        self.itemCodeTable.verticalHeader().hide()
-        self.itemCodeTable.setAlternatingRowColors(True)
-        self.itemCodeTable.horizontalHeader().hide()
-        self.itemCodeTable.verticalHeader().setDefaultSectionSize(65)
-        self.itemCodeTable.setColumnCount(1)
         self.ItemCodeLayout.addWidget(self.ItemCodeLabel)
         self.ItemCodeLayout.addWidget(self.itemCodeComboBox)
-        self.ItemCodeLayout.addWidget(self.itemCodeTable)
         self.itemCodeComboBox.currentIndexChanged.connect(self.codeComboBoxWasClicked)
         self.itemNameComboBox.currentIndexChanged.connect(self.nameComboBoxWasClicked)
         self.sideLayout.addLayout(self.ItemCodeLayout)
@@ -71,22 +58,27 @@ class waiterView(QWidget):
         self.quanitityLayout.addWidget(self.quanitityLabel)
         self.quantityInput = QComboBox()
         self.quantityInput.addItems([str(i) for i in range(1, 21)])
-        self.itemQuantityTable = QTableWidget()
-        self.itemQuantityTable.verticalHeader().setDefaultSectionSize(65)
-        self.itemQuantityTable.setAlternatingRowColors(True)
-        self.itemQuantityTable.verticalHeader().hide()
-        self.itemQuantityTable.horizontalHeader().hide()
-        self.itemQuantityTable.setColumnCount(1)
+
         self.quanitityLayout.addWidget(self.quantityInput)
         self.sideLayout.addLayout(self.quanitityLayout)
-        self.quanitityLayout.addWidget(self.itemQuantityTable)
         self.mainlayout.addLayout(self.sideLayout)
+
+        self.table = QTableView()
+        self.tableModel = BasicTableModel([], ["Item name", "Item Code", "Quantity"]) #don't change this
+        self.table.verticalHeader().setDefaultSectionSize(70)
+        self.table.setAlternatingRowColors(True)
+        self.table.horizontalHeader().hide()
+        self.table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
+        self.table.setModel(self.tableModel)
+        self.mainlayout.addWidget(self.table)
 
         self.addButton = QPushButton()
         self.addButton.setText("Add item")
         self.addButton.clicked.connect(self.addButtonClicked)
         self.addButton.setMinimumHeight(80)
         self.addButton.setStyleSheet(BUTTONSTYLE)
+        self.addButton.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
+        self.addButton.setFlat(True)
         self.mainlayout.addWidget(self.addButton)
 
         self.placeOrderButton = QPushButton()
@@ -97,25 +89,18 @@ class waiterView(QWidget):
         self.mainlayout.addWidget(self.placeOrderButton)
 
     def addButtonClicked(self):
-        row = self.itemCodeTable.rowCount()
-        self.itemCodeTable.insertRow(row)
-        self.itemCodeTable.setItem(row, 0, QTableWidgetItem(self.itemCodeComboBox.currentText()))
-        self.itemNameTable.insertRow(row)
-        self.itemNameTable.setItem(row, 0, QTableWidgetItem(self.itemNameComboBox.currentText()))
-        self.itemQuantityTable.insertRow(row)
-        self.itemQuantityTable.setItem(row, 0, QTableWidgetItem(self.quantityInput.currentText()))
-        self.itemNameTable.resizeColumnToContents(0)
-
         self.items.append([int(self.itemCodeComboBox.currentText()), int(self.quantityInput.currentText())])
+        self.tableItems.append([self.itemNameComboBox.currentText(), self.itemCodeComboBox.currentText(), self.quantityInput.currentText()])
+        self.tableModel.update_all_data(self.tableItems)
 
     def codeComboBoxWasClicked(self):
         index = self.getItemNameWithItemCode(self.itemCodeComboBox.currentText())
         self.itemNameComboBox.setCurrentIndex(index)
-    
+
     def nameComboBoxWasClicked(self):
         index = self.getItemCodeWithItemName(self.itemNameComboBox.currentText())
         self.itemCodeComboBox.setCurrentIndex(index)
-    
+
     def getItemNameWithItemCode(self, itemCode:str):
         itemCodes = self.call_handler.get_item_codes()
         index = itemCodes.index(int(itemCode))
@@ -126,9 +111,8 @@ class waiterView(QWidget):
         index = itemNames.index(itemName)
         return index #return the index of the itemcode in the result of getItemCodes
 
-
-
     def ordered(self):
+        if len(self.items ) == 0: return
         items_dict = {}
         for pair in self.items:
             if pair[0] in items_dict:
@@ -136,10 +120,19 @@ class waiterView(QWidget):
             else: items_dict[pair[0]] = pair[1]
         self.call_handler.on_order_placed(items_dict)
         self.items = []
-        self.itemNameTable.setRowCount(0)
-        self.itemCodeTable.setRowCount(0)
-        self.itemQuantityTable.setRowCount(0)
+        self.tableItems = []
+        self.tableModel.update_all_data(self.tableItems)
+
 
 
 if __name__ == "__main__":
-    print("Execute main_manager.py instead")
+    app = QApplication(sys.argv)
+    mainwidget = QMainWindow()
+    connection = None
+    widget = waiterView()
+    widget.setMaximumWidth(1000)
+    widget.setMinimumHeight(800)
+    mainwidget.setCentralWidget(widget)
+    mainwidget.show()
+    sys.exit(app.exec())
+
