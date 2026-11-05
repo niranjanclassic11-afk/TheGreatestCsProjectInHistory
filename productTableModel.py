@@ -10,18 +10,18 @@ QPushButton{
     font-family:arial;
     font-size: 20px;
     font-weight:bold;
+    border-radius:50px;
 }
 QPushButton:hover{
     background-color: #32484d;
 }
 """
-# In the 18th line ther is "checkmark.png" u can change that to any other image
 TABLESTYLE = """
 QTableView::indicator {
     width: 30;
     height: 30;
     border: 3px solid #555555;
-    border-radius: 20px;
+    border-radius: 100px;
     background-color: #525c5e;
 }
 QTableView::indicator:hover {
@@ -151,7 +151,7 @@ QTableWidget::item:selected:!active {
 
 def betterTable(table:QTableView):
     table.setStyleSheet(TABLESTYLE)
-    font = QFont("corbel", 18)
+    font = QFont("arial", 18)
     table.setFont(font)
     table.horizontalHeader().setDefaultSectionSize(400)
     table.verticalHeader().setDefaultSectionSize(DEFAULT_SECTION_SIZE)
@@ -224,5 +224,47 @@ class ProductTableModel(QAbstractTableModel):
         self._data = new_data
         self.endResetModel()
 
-if __name__ == "__main__":
-    print("Execute main_manager.py instead")
+class BasicTableModel(QAbstractTableModel):
+    def __init__(self, data, headers):
+        super().__init__()
+        self._data = data
+        self._headers = headers
+        self.Index1 = 0
+
+    def rowCount(self, parent=None):
+        return len(self._data)
+
+    def columnCount(self, parent=None):
+        return len(self._headers)
+
+    def flags(self, index):
+        base_flags = super().flags(index)
+        if not index.isValid():
+            return base_flags
+
+        return base_flags
+
+    def data(self, index, role=Qt.ItemDataRole.DisplayRole):
+        if not index.isValid():
+            return None
+
+        if role == Qt.ItemDataRole.DisplayRole:
+            return self._data[index.row()][index.column()]
+
+        return None
+
+    def setData(self, index, value, role=Qt.ItemDataRole.EditRole):
+        if not index.isValid():
+            return False
+
+        return False
+
+    def headerData(self, section, orientation, role=Qt.ItemDataRole.DisplayRole):
+        if role == Qt.ItemDataRole.DisplayRole and orientation == Qt.Orientation.Horizontal:
+            return self._headers[section]
+        return None
+
+    def update_all_data(self, new_data):
+        self.beginResetModel()
+        self._data = new_data
+        self.endResetModel()
