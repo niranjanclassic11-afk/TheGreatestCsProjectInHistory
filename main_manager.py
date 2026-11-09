@@ -42,8 +42,7 @@ class QT_Call_Handler:
         data1 =  cursor.fetchall()
         cursor.execute("select sum(orders.price) from orders where order_id="+str(order_id))
         data2 = cursor.fetchall()
-        print(str(data2[0]))
-        return (data1, data2)
+        return (data1, str(data2[0][0]))
 
     def get_chef_data(self):
         cursor.execute("SELECT Order_ID, Item_Code, Quantity FROM ORDERS WHERE Completed = 0")
