@@ -37,6 +37,13 @@ class QT_Call_Handler:
         conn.commit()
         self.chef_window.updateTable()
         self.cashier_window.updateTable()
+    def get_receipt_data(self, order_id):
+        cursor.execute("select orders.item_code, menu.itemName , orders.quantity, orders.price from orders, menu where orders.item_code = menu.itemcode and orders.order_id = " + str(order_id) + ";")
+        data1 =  cursor.fetchall()
+        cursor.execute("select sum(orders.price) from orders where order_id="+str(order_id))
+        data2 = cursor.fetchall()
+        print(str(data2[0]))
+        return (data1, data2)
 
     def get_chef_data(self):
         cursor.execute("SELECT Order_ID, Item_Code, Quantity FROM ORDERS WHERE Completed = 0")
